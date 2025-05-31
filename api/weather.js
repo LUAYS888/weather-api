@@ -1,12 +1,11 @@
-// api/weather.js
-import axios from 'axios';
+const axios = require('axios');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const city = req.query.city || 'Riyadh';
   const apiKey = process.env.OPENWEATHER_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ error: 'Missing API key in environment variables' });
+    return res.status(500).json({ error: 'Missing API key' });
   }
 
   try {
@@ -20,10 +19,7 @@ export default async function handler(req, res) {
       condition: data.weather[0].main,
       humidity: data.main.humidity
     });
-  } catch (error) {
-    res.status(500).json({
-      error: 'Failed to fetch weather data',
-      message: error.message
-    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch weather', message: err.message });
   }
-}
+};
