@@ -1,8 +1,13 @@
+// api/weather.js
 import axios from 'axios';
 
 export default async function handler(req, res) {
   const city = req.query.city || 'Riyadh';
   const apiKey = process.env.OPENWEATHER_API_KEY;
+
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Missing API key in environment variables' });
+  }
 
   try {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
@@ -15,7 +20,10 @@ export default async function handler(req, res) {
       condition: data.weather[0].main,
       humidity: data.main.humidity
     });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch weather data' });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to fetch weather data',
+      message: error.message
+    });
   }
 }
