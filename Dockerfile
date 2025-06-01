@@ -2,14 +2,17 @@ FROM node:20
 
 WORKDIR /app
 
-# Install dependencies
+# Copy dependencies config
 COPY package*.json ./
+
+# Install all dependencies including dev
 RUN npm install
 
-# Add execution permission to jest binary (important in some runners)
+#  Fix jest permission
 RUN chmod +x ./node_modules/.bin/jest
 
+# Copy the rest of the code
 COPY . .
 
-# Default command
+# Use npx to run jest to avoid PATH or permission issues
 CMD ["npm", "test"]
