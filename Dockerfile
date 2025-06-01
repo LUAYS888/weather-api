@@ -1,18 +1,20 @@
+# Use Node 20 base image
 FROM node:20
 
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy dependencies config
+# Copy package.json and package-lock.json (if exists)
 COPY package*.json ./
 
-# Install all dependencies including dev
+# Install all dependencies (prod + dev)
 RUN npm install
 
-#  Fix jest permission
+# Optional: ensure Jest binary is executable (not always needed but safe)
 RUN chmod +x ./node_modules/.bin/jest
 
-# Copy the rest of the code
+# Copy application source code
 COPY . .
 
-# Use npx to run jest to avoid PATH or permission issues
+# Run tests using the npm script (uses Jest via CommonJS)
 CMD ["npm", "test"]

@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx --no-install jest"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
+  
   "description": "",
   "dependencies": {
     "axios": "^1.4.0"
